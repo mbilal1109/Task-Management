@@ -15,7 +15,7 @@ public class TodoDto {
     private int todoId;
     private String title;
     private String description;
-    private Date createdDate;
+    private String createdDate;
     private Date dueDate;
     private Date modifiedDate;
     private String priority;

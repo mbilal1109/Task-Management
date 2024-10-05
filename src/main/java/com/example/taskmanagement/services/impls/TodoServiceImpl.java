@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,7 +33,6 @@ public class TodoServiceImpl implements TodoService {
 
         currentTodo.setTitle(todoDto.getTitle());
         currentTodo.setDescription(todoDto.getDescription());
-        currentTodo.setCreatedDate(todoDto.getCreatedDate());
         currentTodo.setDueDate(todoDto.getDueDate());
         currentTodo.setModifiedDate(todoDto.getModifiedDate());
         currentTodo.setPriority(todoDto.getPriority());
