@@ -31,10 +31,14 @@ public class TodoServiceImpl implements TodoService {
     public TodoDto updateTodo(int todoId, TodoDto todoDto) {
         Todo currentTodo = todoRepository.findById(todoId).orElseThrow(() -> new RuntimeException("Todo with given id not found"));
 
+        Date modifiedDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = dateFormat.format(modifiedDate);
+        currentTodo.setModifiedDate(dateString);
+
         currentTodo.setTitle(todoDto.getTitle());
         currentTodo.setDescription(todoDto.getDescription());
         currentTodo.setDueDate(todoDto.getDueDate());
-        currentTodo.setModifiedDate(todoDto.getModifiedDate());
         currentTodo.setPriority(todoDto.getPriority());
         currentTodo.setStatus(todoDto.getStatus());
         currentTodo.setNotes(todoDto.getNotes());

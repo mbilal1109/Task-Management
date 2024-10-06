@@ -26,13 +26,13 @@ public class Todo {
     private String description;
 
     @Column(name = "todo_created_date")
-    private Date createdDate;
+    private String createdDate;
 
     @Column(name = "todo_due_date")
-    private Date dueDate;
+    private String dueDate;
 
     @Column(name = "todo_modified_date")
-    private Date modifiedDate;
+    private String modifiedDate;
 
     @Column(name = "todo_priority")
     private String priority; // LOW, MEDIUM, HIGH
