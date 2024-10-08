@@ -23,6 +23,11 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public TodoDto createTodo(TodoDto todoDto) {
+        Date createdDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = dateFormat.format(createdDate);
+        todoDto.setCreatedDate(dateString);
+
         Todo todo = todoRepository.save(mapper.map(todoDto, Todo.class));
         return mapper.map(todo, TodoDto.class);
     }

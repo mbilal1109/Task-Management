@@ -21,11 +21,6 @@ public class TodoController {
 
     @PostMapping
     public ResponseEntity<TodoDto> createTodo(@RequestBody TodoDto todoDto) {
-        Date createdDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = dateFormat.format(createdDate);
-        todoDto.setCreatedDate(dateString);
-
         TodoDto createdTodo = todoService.createTodo(todoDto);
         return new ResponseEntity<>(createdTodo, HttpStatus.CREATED);
     }
