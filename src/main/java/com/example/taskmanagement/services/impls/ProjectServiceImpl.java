@@ -9,8 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -23,6 +24,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDto createProject(ProjectDto projectDto) {
+        Date createdDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = dateFormat.format(createdDate);
+        projectDto.setCreatedDate(dateString);
+
         Project project = projectRepository.save(mapper.map(projectDto, Project.class));
         return mapper.map(project, ProjectDto.class);
     }
@@ -30,6 +36,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDto updateProject(int projectId, ProjectDto projectDto) {
         Project currentProject = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project with given id not found"));
+
+        Date modifiedDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = dateFormat.format(modifiedDate);
+        currentProject.setModifiedDate(dateString);
 
         currentProject.setName(projectDto.getName());
         currentProject.setPriority(projectDto.getPriority());
