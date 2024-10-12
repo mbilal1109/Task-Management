@@ -35,10 +35,10 @@ public class Todo {
     private String modifiedDate;
 
     @Column(name = "todo_priority")
-    private String priority; // LOW, MEDIUM, HIGH
+    private String priority;
 
     @Column(name = "todo_status")
-    private String status; // PENDING, IN-PROGRESS, COMPLETED
+    private String status;
 
     @Column(name = "todo_notes")
     private String notes;

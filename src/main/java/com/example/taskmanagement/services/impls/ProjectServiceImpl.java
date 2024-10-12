@@ -3,13 +3,16 @@ package com.example.taskmanagement.services.impls;
 import com.example.taskmanagement.dtos.ProjectDto;
 import com.example.taskmanagement.dtos.TodoDto;
 import com.example.taskmanagement.entities.Project;
+import com.example.taskmanagement.entities.Todo;
 import com.example.taskmanagement.repositories.ProjectRepository;
+import com.example.taskmanagement.repositories.TodoRepository;
 import com.example.taskmanagement.services.ProjectService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,7 +72,32 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<TodoDto> getAllTodoForProject() {
-        return null;
+    public List<TodoDto> getAllTodoForProject(int projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project with given id not found"));
+        List<Todo> todos = project.getTodos();
+        List<TodoDto> todoDtos = todos.stream().map(todo -> mapper.map(todo, TodoDto.class)).toList();
+        return todoDtos;
+    }
+
+    @Override
+    public ProjectDto addTodoToProject(int projectId, TodoDto todoDto) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project with given id not found"));
+
+        Todo todo = new Todo();
+        todo.setTitle(todoDto.getTitle());
+        todo.setDescription(todoDto.getDescription());
+        todo.setPriority(todoDto.getPriority());
+        todo.setStatus(todoDto.getStatus());
+        todo.setNotes(todoDto.getNotes());
+
+        Date createdDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = dateFormat.format(createdDate);
+        todo.setCreatedDate(dateString);
+
+        project.getTodos().add(todo);
+        Project updatedProject = projectRepository.save(project);
+
+        return mapper.map(updatedProject, ProjectDto.class);
     }
 }

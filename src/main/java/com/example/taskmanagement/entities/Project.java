@@ -34,7 +34,7 @@ public class Project {
     @Column(name = "project_priority")
     private String priority;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "project_id")
     private List<Todo> todos;
 }

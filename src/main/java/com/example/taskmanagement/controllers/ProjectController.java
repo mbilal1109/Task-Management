@@ -2,6 +2,7 @@ package com.example.taskmanagement.controllers;
 
 import com.example.taskmanagement.commons.ApiResponseMessage;
 import com.example.taskmanagement.dtos.ProjectDto;
+import com.example.taskmanagement.dtos.TodoDto;
 import com.example.taskmanagement.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,5 +53,17 @@ public class ProjectController {
     public ResponseEntity<List<ProjectDto>> getAllProjects() {
         List<ProjectDto> projectDtos = projectService.getAllProject();
         return new ResponseEntity<>(projectDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/{projectId}/todos")
+    public ResponseEntity<List<TodoDto>> getAllTodosFromProject(@PathVariable int projectId) {
+        List<TodoDto> todoDtos = projectService.getAllTodoForProject(projectId);
+        return new ResponseEntity<>(todoDtos, HttpStatus.OK);
+    }
+
+    @PostMapping("/{projectId}")
+    public ResponseEntity<ProjectDto> addTodoToProject(@PathVariable int projectId, @RequestBody TodoDto todoDto) {
+        ProjectDto projectDto = projectService.addTodoToProject(projectId, todoDto);
+        return new ResponseEntity<>(projectDto, HttpStatus.CREATED);
     }
 }
