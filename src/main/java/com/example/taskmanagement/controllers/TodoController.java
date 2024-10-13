@@ -3,6 +3,7 @@ package com.example.taskmanagement.controllers;
 import com.example.taskmanagement.commons.ApiResponseMessage;
 import com.example.taskmanagement.dtos.TodoDto;
 import com.example.taskmanagement.services.TodoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,13 @@ public class TodoController {
     private TodoService todoService;
 
     @PostMapping
-    public ResponseEntity<TodoDto> createTodo(@RequestBody TodoDto todoDto) {
+    public ResponseEntity<TodoDto> createTodo(@Valid @RequestBody TodoDto todoDto) {
         TodoDto createdTodo = todoService.createTodo(todoDto);
         return new ResponseEntity<>(createdTodo, HttpStatus.CREATED);
     }
 
     @PutMapping("/{todoId}")
-    public ResponseEntity<TodoDto> updateTodo(@PathVariable int todoId, @RequestBody TodoDto todoDto) {
+    public ResponseEntity<TodoDto> updateTodo(@Valid @PathVariable int todoId, @RequestBody TodoDto todoDto) {
         TodoDto updatedTodo = todoService.updateTodo(todoId, todoDto);
         return new ResponseEntity<>(updatedTodo, HttpStatus.OK);
     }

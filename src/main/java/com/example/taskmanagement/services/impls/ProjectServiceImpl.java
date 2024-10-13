@@ -25,6 +25,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ModelMapper mapper;
 
+    @Autowired
+    private TodoRepository todoRepository;
+
     @Override
     public ProjectDto createProject(ProjectDto projectDto) {
         Date createdDate = new Date();
@@ -80,7 +83,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectDto addTodoToProject(int projectId, TodoDto todoDto) {
+    public ProjectDto createTodoInProject(int projectId, TodoDto todoDto) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project with given id not found"));
 
         Todo todo = new Todo();
@@ -98,6 +101,19 @@ public class ProjectServiceImpl implements ProjectService {
         project.getTodos().add(todo);
         Project updatedProject = projectRepository.save(project);
 
+        return mapper.map(updatedProject, ProjectDto.class);
+    }
+
+    @Override
+    public ProjectDto addExistingTodoInProject(int projectId, List<Integer> todoDtoIds) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project with given id not found"));
+
+        for(Integer id : todoDtoIds) {
+            Todo todoFound = todoRepository.findById(id).orElseThrow(() -> new RuntimeException("Todo with given id not found"));
+            project.getTodos().add(todoFound);
+        }
+
+        Project updatedProject = projectRepository.save(project);
         return mapper.map(updatedProject, ProjectDto.class);
     }
 }

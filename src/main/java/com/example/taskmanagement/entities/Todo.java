@@ -19,10 +19,10 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int todoId;
 
-    @Column(name = "todo_title")
+    @Column(name = "todo_title", nullable = false)
     private String title;
 
-    @Column(name = "todo_description")
+    @Column(name = "todo_description", nullable = false)
     private String description;
 
     @Column(name = "todo_created_date")

@@ -1,5 +1,7 @@
 package com.example.taskmanagement.dtos;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +15,13 @@ import java.util.Date;
 @NoArgsConstructor
 public class TodoDto {
     private int todoId;
+
+    @NotBlank(message = "Todo Title is Required")
     private String title;
+
+    @NotBlank(message = "Todo Description is Required")
     private String description;
+
     private String createdDate;
     private String dueDate;
     private String modifiedDate;

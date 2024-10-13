@@ -4,6 +4,7 @@ import com.example.taskmanagement.commons.ApiResponseMessage;
 import com.example.taskmanagement.dtos.ProjectDto;
 import com.example.taskmanagement.dtos.TodoDto;
 import com.example.taskmanagement.services.ProjectService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,8 +63,18 @@ public class ProjectController {
     }
 
     @PostMapping("/{projectId}")
-    public ResponseEntity<ProjectDto> addTodoToProject(@PathVariable int projectId, @RequestBody TodoDto todoDto) {
-        ProjectDto projectDto = projectService.addTodoToProject(projectId, todoDto);
+    public ResponseEntity<ProjectDto> addTodoToProject(@PathVariable int projectId, @Valid @RequestBody TodoDto todoDto) {
+        ProjectDto projectDto = projectService.createTodoInProject(projectId, todoDto);
         return new ResponseEntity<>(projectDto, HttpStatus.CREATED);
+    }
+
+    /*
+        For testing this endpoint, we pass an array with the ids
+        Ex: [1, 2, 3]
+     */
+    @PostMapping("/{projectId}/todos")
+    public ResponseEntity<ProjectDto> addExistingTodoToProject(@PathVariable int projectId, @RequestBody List<Integer> todoIds) {
+        ProjectDto projectDto = projectService.addExistingTodoInProject(projectId, todoIds);
+        return new ResponseEntity<>(projectDto, HttpStatus.OK);
     }
 }
