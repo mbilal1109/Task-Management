@@ -121,11 +121,14 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void removeTodoFromProject(int projectId, int todoId) {
+    public void removeTodosFromProject(int projectId, List<Integer> todoDtoIds) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project with given id not found"));
-        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new RuntimeException("Todo with given id not found"));
 
-        project.getTodos().remove(todo);
+        for(Integer id : todoDtoIds) {
+            Todo todo = todoRepository.findById(id).orElseThrow(() -> new RuntimeException("Todo with given id not found"));
+            project.getTodos().remove(todo);
+        }
+
         logger.info(project.toString());
         projectRepository.save(project);
     }
