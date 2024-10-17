@@ -8,11 +8,12 @@ import com.example.taskmanagement.repositories.ProjectRepository;
 import com.example.taskmanagement.repositories.TodoRepository;
 import com.example.taskmanagement.services.ProjectService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private TodoRepository todoRepository;
+
+    private Logger logger = LoggerFactory.getLogger(ProjectServiceImpl.class);
 
     @Override
     public ProjectDto createProject(ProjectDto projectDto) {
@@ -115,5 +118,15 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project updatedProject = projectRepository.save(project);
         return mapper.map(updatedProject, ProjectDto.class);
+    }
+
+    @Override
+    public void removeTodoFromProject(int projectId, int todoId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project with given id not found"));
+        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new RuntimeException("Todo with given id not found"));
+
+        project.getTodos().remove(todo);
+        logger.info(project.toString());
+        projectRepository.save(project);
     }
 }

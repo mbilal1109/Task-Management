@@ -77,4 +77,17 @@ public class ProjectController {
         ProjectDto projectDto = projectService.addExistingTodoInProject(projectId, todoIds);
         return new ResponseEntity<>(projectDto, HttpStatus.OK);
     }
+
+    @PutMapping("/{projectId}/todos/{todoId}")
+    public ResponseEntity<ApiResponseMessage> removeTodoFromProject(@PathVariable int projectId, @PathVariable int todoId) {
+        projectService.removeTodoFromProject(projectId, todoId);
+
+        ApiResponseMessage message = ApiResponseMessage.builder()
+                .message("Todo Removed from Project Successfully")
+                .status(HttpStatus.OK)
+                .success(true)
+                .build();
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }

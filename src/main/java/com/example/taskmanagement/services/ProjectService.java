@@ -14,4 +14,5 @@ public interface ProjectService {
     List<TodoDto> getAllTodoForProject(int projectId);
     ProjectDto createTodoInProject(int projectId, TodoDto todoDto);
     ProjectDto addExistingTodoInProject(int projectId, List<Integer> todoDtoIds);
+    void removeTodoFromProject(int projectId, int todoId);
 }
