@@ -4,8 +4,10 @@ import com.example.taskmanagement.dtos.ProjectDto;
 import com.example.taskmanagement.dtos.TodoDto;
 import com.example.taskmanagement.entities.Project;
 import com.example.taskmanagement.entities.Todo;
+import com.example.taskmanagement.entities.User;
 import com.example.taskmanagement.repositories.ProjectRepository;
 import com.example.taskmanagement.repositories.TodoRepository;
+import com.example.taskmanagement.repositories.UserRepository;
 import com.example.taskmanagement.services.ProjectService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -29,16 +31,25 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private TodoRepository todoRepository;
 
-    private Logger logger = LoggerFactory.getLogger(ProjectServiceImpl.class);
+    @Autowired
+    private UserRepository userRepository;
+
+    private final Logger logger = LoggerFactory.getLogger(ProjectServiceImpl.class);
 
     @Override
-    public ProjectDto createProject(ProjectDto projectDto) {
+    public ProjectDto createProject(int userId, ProjectDto projectDto) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User with given id not found"));
+
         Date createdDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = dateFormat.format(createdDate);
         projectDto.setCreatedDate(dateString);
 
         Project project = projectRepository.save(mapper.map(projectDto, Project.class));
+
+        user.getProjects().add(project);
+        userRepository.save(user);
+
         return mapper.map(project, ProjectDto.class);
     }
 

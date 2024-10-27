@@ -18,5 +18,5 @@ public class UserDto {
     @NotBlank(message = "User Name is Required")
     private String name;
 
-    private List<ProjectDto> projectDtos;
+    private List<ProjectDto> projects;
 }

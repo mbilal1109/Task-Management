@@ -19,9 +19,9 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    @PostMapping
-    public ResponseEntity<ProjectDto> createProject(@RequestBody ProjectDto projectDto) {
-        ProjectDto createdProject = projectService.createProject(projectDto);
+    @PostMapping("/{userId}/users")
+    public ResponseEntity<ProjectDto> createProject(@PathVariable int userId, @RequestBody ProjectDto projectDto) {
+        ProjectDto createdProject = projectService.createProject(userId, projectDto);
         return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
     }
 

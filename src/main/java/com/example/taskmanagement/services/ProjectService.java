@@ -6,7 +6,7 @@ import com.example.taskmanagement.dtos.TodoDto;
 import java.util.List;
 
 public interface ProjectService {
-    ProjectDto createProject(ProjectDto projectDto);
+    ProjectDto createProject(int userId, ProjectDto projectDto);
     ProjectDto updateProject(int projectId, ProjectDto projectDto);
     void deleteProject(int projectId);
     List<ProjectDto> getAllProject();
